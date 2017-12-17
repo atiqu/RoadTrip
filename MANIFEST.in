@@ -1,0 +1,3 @@
+graft roadtrip/templates
+graft roadtrip/static
+include roadtrip/schema.sql
