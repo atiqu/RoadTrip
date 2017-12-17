@@ -69,12 +69,20 @@ def add_activity():
     if not session.get('logged_in'):
         abort(401)
     db = get_db()
+    start_date_time = "{date} {time}".format(
+        date=request.form['start_time'],
+        time=request.form['start_time_select']
+    )
+    end_date_time = "{date} {time}".format(
+        date=request.form['end_time'],
+        time=request.form['end_time_select']
+    )
     db.execute('insert into activities (title, text, start_time, end_time) values (?, ?, ?, ?)',
                  [
                      request.form['title'],
                      request.form['text'],
-                     request.form['start_time'],
-                     request.form['end_time']
+                     start_date_time,
+                     end_date_time
                  ]
                )
     db.commit()

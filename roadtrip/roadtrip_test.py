@@ -47,18 +47,16 @@ class RoadtripTestCase(unittest.TestCase):
         rv = self.app.post(
             '/add_activity',
             data=dict(
-                title="111",
-                text="222",
-                start_time = "333",
-                end_time = "444"
+                title="Title",
+                text="Text",
+                start_time = "Start Time",
+                end_time = "End Time"
             ),
             follow_redirects=True)
-        assert b'111' in rv.data
-        assert b'222' in rv.data
-        assert b'333' in rv.data
-        assert b'444' in rv.data
-
-
+        assert b'Title' in rv.data
+        assert b'Text' in rv.data
+        assert b'Start Time' in rv.data
+        assert b'End Time' in rv.data
 
 if __name__ == '__main__':
     unittest.main()

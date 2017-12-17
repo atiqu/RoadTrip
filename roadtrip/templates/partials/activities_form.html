@@ -11,8 +11,23 @@
     <form action="{{ url_for('add_activity') }}" method=post class=verticalform>
       Title: <input type=text name=title ><br />
       Text: <input type="text" name=text ><br />
-      Start Time: <input type=text name=start_time class="dp" ><br />
-      End Time: <input type="text" name=end_time class="dp"><br />
+      Start Time: <input type=text name=start_time class="dp" >
+        <select name="start_time_select">
+        {% for hour in range(0, 25) %}
+            <option name="{{hour}} : 00">{{ hour }} : 00</option>
+            <option name="{{hour}} : 30">{{ hour }} : 30</option>
+        {% endfor %}
+        </select>
+
+        <br />
+      End Time: <input type="text" name=end_time class="dp">
+        <select name="end_time_select">
+        {% for hour in range(0, 25) %}
+            <option name="{{ hour }} : 00">{{ hour }} : 00</option>
+            <option name="{{ hour }} : 30">{{ hour }} : 30</option>
+        {% endfor %}
+        </select>
+        <br />
       <input type=submit value=Submit>
     </form>
     {% endif %}
