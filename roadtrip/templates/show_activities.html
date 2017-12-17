@@ -1,20 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
- {% if session.logged_in %}
-    <form action="{{ url_for('add_activity') }}" method=post class=add-entry>
-      <dl>
-        <dt>Title:
-        <dd><input type=text size=30 name=title>
-        <dt>Text:
-        <dd><input type="text" name=text ></input>
-          <dt>Start Time:
-        <dd><input type="text" name=start_time></input>
-          <dt>End Time:
-        <dd><input type="text" name=end_time></input>
-        <dd><input type=submit value=Submit>
-      </dl>
-    </form>
-  {% endif %}
+  {% include "partials/activities_form.html" %}
   <ul class=entries>
   {% for entry in activities %}
       <li><h2>{{ entry.title }}</h2></li>
@@ -26,5 +12,4 @@
        <h2>There are no activities</h2>
 
   {% endfor %}
-  </ul>
 {% endblock %}

@@ -1,0 +1,14 @@
+MANIFEST.in
+roadtrip/__init__.py
+roadtrip/roadtrip.py
+roadtrip/roadtrip_test.py
+roadtrip/schema.sql
+roadtrip.egg-info/PKG-INFO
+roadtrip.egg-info/SOURCES.txt
+roadtrip.egg-info/dependency_links.txt
+roadtrip.egg-info/requires.txt
+roadtrip.egg-info/top_level.txt
+roadtrip/static/style.css
+roadtrip/templates/layout.html
+roadtrip/templates/login.html
+roadtrip/templates/show_activities.html
