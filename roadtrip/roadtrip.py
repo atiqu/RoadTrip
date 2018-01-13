@@ -2,9 +2,10 @@
 import os
 import sqlite3
 from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
+     render_template, flash, jsonify
 from flask_bootstrap import Bootstrap
 from flask_datepicker import datepicker
+import json
 
 app = Flask(__name__) # create the application instance :)
 Bootstrap(app)
@@ -20,6 +21,27 @@ app.config.update(dict(
     PASSWORD='default'
 ))
 app.config.from_envvar('ROADTRIP_SETTINGS', silent=True)
+
+# @app.route('/data')
+# def return_data():
+#     start_date = request.args.get('start', '')
+#     end_date = request.args.get('end', '')
+#     # You'd normally use the variables above to limit the data returned
+#     # you don't want to return ALL events like in this code
+#     # but since no db or any real storage is implemented I'm just
+#     # returning data from a text file that contains json elements
+#
+#     with open("events.json", "r") as input_data:
+#         # you should use something else here than just plaintext
+#         # check out jsonfiy method or the built in json module
+#         # http://flask.pocoo.org/docs/0.10/api/#module-flask.json
+#         return input_data.read()
+
+
+@app.route('/json')
+def calendar():
+    return render_template('json.html')
+
 
 def connect_db():
     """Connects to the specific database."""
@@ -77,15 +99,31 @@ def add_activity():
         date=request.form['end_time'],
         time=request.form['end_time_select']
     )
-    db.execute('insert into activities (title, text, start_time, end_time) values (?, ?, ?, ?)',
-                 [
-                     request.form['title'],
-                     request.form['text'],
-                     start_date_time,
-                     end_date_time
-                 ]
-               )
+
+    session['title'] = request.form['title']
+    session['start_time'] = request.form['start_time']
+    session['end_time'] = requset.form['end_time']
+    
+    jsonified = jsonify(
+        title=request.form['title'],
+        start=request.form['start_time'],
+        end=request.form['end_time']
+    )
+    
+    
+
+    db.execute(
+        'insert into activities (title, text, start_time, end_time) values (?, ?, ?, ?)',
+        [
+            request.form['title'],
+            request.form['text'],
+            start_date_time,
+            end_date_time
+        ]
+    )
+
     db.commit()
+
     flash('New entry was successfully posted')
     return redirect(url_for('show_activities'))
 
@@ -94,6 +132,7 @@ def show_activities():
     db = get_db()
     cur = db.execute('select title, text, start_time, end_time from activities order by id desc')
     activities = cur.fetchall()
+    print session['title']
     return render_template('show_activities.html', activities=activities)
 
 
@@ -129,3 +168,7 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('show_activities'))
+
+if __name__ == '__main__':
+    app.debug = True
+    app.run()

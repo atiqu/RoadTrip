@@ -11,4 +11,27 @@
   {% else %}
        <h2>There are no activities</h2>
   {% endfor %}
+
+  <<script src="{{ url_for('static', filename='lib/moment.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lib/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='fullcalendar.min.js') }}"></script>
+<script>
+	$(document).ready(function() {
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			defaultDate: '2014-09-12',
+			editable: true,
+			eventLimit: true, // allow "more" link when too many events
+			events: {
+				url: 'data',
+			}
+		});
+	});
+</script>
+<div id="calendar"></div>
+
 {% endblock %}
